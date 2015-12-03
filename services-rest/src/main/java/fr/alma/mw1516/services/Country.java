@@ -8,6 +8,9 @@ public class Country {
     protected Long id;
     protected String name;
 
+    public Country() {
+    }
+
     public Long getId() {
         return id;
     }
