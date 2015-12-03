@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.nuiton</groupId>
+    <artifactId>pom</artifactId>
+    <version>3</version>
+  </parent>
+
+  <groupId>fr.alma.mw1516.groupe</groupId>
+  <artifactId>ame-parent</artifactId>
+  <version>0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <name>ALMA Mobile Ecosystem</name>
+
+  <modules>
+    <module>api</module>
+    <module>services</module>
+    <module>services-rest</module>
+    <module>services-ejb</module>
+    <module>client</module>
+  </modules>
+
+  <properties>
+    <enforcer.skip>true</enforcer.skip>
+  </properties>
+
+  <dependencies>
+  </dependencies>
+
+  <repositories>
+
+    <repository>
+      <id>devjavanet</id>
+      <url>http://download.java.net/maven2/</url>
+    </repository>
+
+  </repositories>
+
+  <build>
+    <resources />
+    <plugins />
+  </build>
+
+  <profiles>
+  </profiles>
+
+</project>
+

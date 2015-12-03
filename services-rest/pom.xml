@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>fr.alma.mw1516.groupe</groupId>
+    <artifactId>ame-parent</artifactId>
+    <version>0.1-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>ame-services-rest</artifactId>
+  <packaging>war</packaging>
+
+  <name>ALMA Mobile Ecosystem :: Services REST</name>
+
+  <properties>
+    <springVersion>4.2.3.RELEASE</springVersion>
+  </properties>
+
+  <dependencies>
+
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>ame-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <version>1.4.190</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+      <version>${springVersion}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+      <version>${springVersion}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+      <version>${springVersion}</version>
+    </dependency>
+
+    <!-- Jackson JSON Mapper -->
+    <dependency>
+      <groupId>org.codehaus.jackson</groupId>
+      <artifactId>jackson-mapper-asl</artifactId>
+      <version>1.9.11</version>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <resources />
+    <plugins />
+  </build>
+
+  <profiles>
+  </profiles>
+
+</project>
+
