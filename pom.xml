@@ -16,11 +16,10 @@
   <name>ALMA Mobile Ecosystem</name>
 
   <modules>
-    <module>api</module>
     <module>services</module>
     <module>services-rest</module>
-    <module>services-ejb</module>
-    <module>client</module>
+    <module>model</module>
+    <module>persistence</module>
   </modules>
 
   <properties>

@@ -1,4 +1,4 @@
-package fr.alma.mw1516.services;
+package fr.alma.mw1516.model;
 
 public class User {
 	String id;

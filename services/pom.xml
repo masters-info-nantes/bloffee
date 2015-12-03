@@ -19,8 +19,14 @@
   <dependencies>
 
     <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>ame-api</artifactId>
+      <groupId>fr.alma.mw1516.groupe</groupId>
+      <artifactId>ame-persistance</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>fr.alma.mw1516.groupe</groupId>
+      <artifactId>ame-model</artifactId>
       <version>${project.version}</version>
     </dependency>
 
