@@ -38,21 +38,33 @@ public class UserRepository {
     }
 
     public String findTokenByIMEI(String IMEI) {
+        if (IMEI == null)
+            return null;
+
         ConcurrentNavigableMap<String, String> IMEI2Token = db.treeMap(IMEI_TOKEN_DB);
         return IMEI2Token.get(IMEI);
     }
 
     public User findUserById(String userId) {
+        if (userId == null)
+            return null;
+
         ConcurrentNavigableMap<String, User> userDb = db.treeMap(USER_DB);
         return userDb.get(userId);
     }
 
     public User findUserByToken(String token) {
+        if (token == null)
+            return null;
+
         ConcurrentNavigableMap<String, String> tokenDb = db.treeMap(TOKEN_USER_DB);
         return findUserById(tokenDb.get(token));
     }
 
     public User findUserByIMEI(String IMEI) {
+        if (IMEI == null)
+            return null;
+
         ConcurrentNavigableMap<String, String> IMEIDb = db.treeMap(IMEI_USER_DB);
         return findUserById(IMEIDb.get(IMEI));
     }
