@@ -14,6 +14,8 @@
   <name>ALMA Mobile Ecosystem :: Client</name>
 
   <properties>
+    <java.mainClass>fr.alma.mw1516.client.HelloRestTest</java.mainClass>
+    <java.version>1.7</java.version>
   </properties>
 
   <dependencies>
@@ -36,26 +38,56 @@
       <artifactId>httpcore</artifactId>
       <version>4.4.4</version>
     </dependency>
-
-    <!-- Dependencies for EJB client -->
-    <dependency>
-      <groupId>org.jboss</groupId>
-      <artifactId>jboss-ejb-client</artifactId>
-      <version>1.0.24.Final</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.jboss.as</groupId>
-      <artifactId>jboss-as-ejb-client-bom</artifactId>
-      <version>7.1.3.Final</version>
-      <type>pom</type>
-    </dependency>
-
   </dependencies>
 
   <build>
     <resources />
-    <plugins />
+    <plugins>
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>${java.mainClass}</mainClass>
+              <addClasspath>true</addClasspath>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+          <archive>
+            <manifest>
+              <mainClass>${java.mainClass}</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
   </build>
 
   <profiles>
