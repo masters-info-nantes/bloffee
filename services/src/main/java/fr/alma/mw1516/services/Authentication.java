@@ -70,11 +70,11 @@ public class Authentication {
 
         Token token = UserRepository.getInstance().findTokenByIMEI(String.valueOf(imei));
         if (token == null || token.getExpired().before(new Date())) {
-            UserRepository.getInstance()
+            token = UserRepository.getInstance()
                     .createToken(UUID.randomUUID().toString(),
                             String.valueOf(imei),
                             u);
         }
-    	return token;
+        return token;
     }
 }

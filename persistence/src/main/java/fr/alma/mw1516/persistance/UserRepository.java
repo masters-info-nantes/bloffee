@@ -112,7 +112,7 @@ public class UserRepository {
         return userById;
     }
 
-    public void createToken(String token, String imei, User user) {
+    public Token createToken(String token, String imei, User user) {
         openDB();
 
         Date expireTime = new Date();
@@ -128,6 +128,8 @@ public class UserRepository {
 
         db.commit();
         closeDB();
+
+        return new Token(token, expireTime);
     }
 
     public Token findToken(String tokenId) {
