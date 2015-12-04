@@ -1,7 +1,7 @@
 Bloffee
 =======
 
-![bloffee](https://cloud.githubusercontent.com/assets/6644095/11587607/e69ee9f8-9a7a-11e5-9ad6-d84ac1b8d3b4.png)
+![bloffee_small](https://cloud.githubusercontent.com/assets/6644095/11587898/179a7386-9a7d-11e5-93db-1ae89fa5aae9.png)
 
 Bloffee is a token-based authentication service accessible via a rest API and developped in Java using the Spring framework
 
