@@ -1,6 +1,8 @@
 package fr.alma.mw1516.model;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
 	String id;
 	String firstName;
 	String lastName;

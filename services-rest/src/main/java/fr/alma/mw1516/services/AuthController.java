@@ -26,9 +26,9 @@ public class AuthController {
             return authService.getToken(imei);
 
         } catch (IMEINotFoundException e) {
-            throw new NotFoundException(e);
+            throw new NotFoundException("IMEI not found");
         } catch (IMEIInvalidFormatException e) {
-            throw new UnprocessableEntityException(e);
+            throw new UnprocessableEntityException("IMEI invalid format");
         }
 
     }
@@ -45,9 +45,9 @@ public class AuthController {
         try {
             return authService.getUser(token);
         } catch (UserNotFoundException e) {
-            throw new NotFoundException(e);
+            throw new NotFoundException("User not found");
         } catch (TokenInvalidFormatException e) {
-            throw new UnprocessableEntityException(e);
+            throw new UnprocessableEntityException("Token invalid format");
         }
 
     }

@@ -16,8 +16,10 @@ import java.util.UUID;
  */
 public class Authentication {
 
-
     private static Authentication instance;
+
+    private Authentication() {
+    }
 
     public static Authentication getInstance() {
         if (instance == null) {
@@ -31,7 +33,7 @@ public class Authentication {
         if (!checkToken(token))
             throw new TokenInvalidFormatException();
 
-        User u = UserRepository.getInstance().getUser(token);
+        User u = UserRepository.getInstance().findUserByToken(token);
         if (u == null) {
             throw new UserNotFoundException();
         }
@@ -53,9 +55,9 @@ public class Authentication {
         if (!checkIMEI(imei))
             throw new IMEIInvalidFormatException();
 
-    	String token = UUID.randomUUID().toString();
+    	String token = UserRepository.getInstance().findTokenByIMEI(String.valueOf(imei));
     	//Remember to save the token in the database!!!
-        if (token.equals("")) {
+        if (token == null) {
             throw new IMEINotFoundException();
         }
     	return token;
