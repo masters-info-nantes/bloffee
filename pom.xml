@@ -16,6 +16,7 @@
   <name>ALMA Mobile Ecosystem</name>
 
   <modules>
+    <module>client</module>
     <module>services</module>
     <module>services-rest</module>
     <module>model</module>

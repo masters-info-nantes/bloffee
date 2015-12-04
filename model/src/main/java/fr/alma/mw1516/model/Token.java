@@ -1,10 +1,5 @@
 package fr.alma.mw1516.model;
 
-/**
- * Created on 12/4/15.
- *
- * @author dralagen
- */
 public class Token {
     private String token;
 
