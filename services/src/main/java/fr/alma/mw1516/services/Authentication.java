@@ -12,7 +12,7 @@ import java.util.UUID;
 /**
  * Created on 12/3/15.
  *
- * @author dralagen
+ * @author Adrien Garandel, Nicolas Brondin
  */
 public class Authentication {
 
