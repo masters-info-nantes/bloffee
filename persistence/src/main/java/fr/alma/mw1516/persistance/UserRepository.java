@@ -20,19 +20,30 @@ public class UserRepository {
     private static final String IMEI_TOKEN_DB = "IMEIToken";
 
     private static UserRepository instance;
-    private final DB db;
+    private DB db;
 
     private UserRepository() {
-        db = DBMaker.fileDB(new File("bloffee.db"))
-                .closeOnJvmShutdown()
-                .encryptionEnable("password")
-                .make();
+    }
+
+    private DB openDB() {
+        if (db == null || db.isClosed()) {
+            db = DBMaker.fileDB(new File("bloffee.db"))
+                    .closeOnJvmShutdown()
+                    .encryptionEnable("password")
+                    .make();
+        }
+        return db;
+    }
+
+    private void closeDB() {
+        if (!db.isClosed()) {
+            db.close();
+        }
     }
 
     public static UserRepository getInstance() {
         if (instance == null) {
             instance = new UserRepository();
-
         }
         return instance;
     }
@@ -41,35 +52,55 @@ public class UserRepository {
         if (IMEI == null)
             return null;
 
+        openDB();
+
         ConcurrentNavigableMap<String, String> IMEI2Token = db.treeMap(IMEI_TOKEN_DB);
-        return IMEI2Token.get(IMEI);
+        String s = IMEI2Token.get(IMEI);
+
+        closeDB();
+        return s;
     }
 
     public User findUserById(String userId) {
         if (userId == null)
             return null;
 
+        openDB();
+
         ConcurrentNavigableMap<String, User> userDb = db.treeMap(USER_DB);
-        return userDb.get(userId);
+        User user = userDb.get(userId);
+        closeDB();
+        return user;
     }
 
     public User findUserByToken(String token) {
         if (token == null)
             return null;
 
+        openDB();
+
         ConcurrentNavigableMap<String, String> tokenDb = db.treeMap(TOKEN_USER_DB);
-        return findUserById(tokenDb.get(token));
+        User userById = findUserById(tokenDb.get(token));
+        closeDB();
+        return userById;
     }
 
     public User findUserByIMEI(String IMEI) {
         if (IMEI == null)
             return null;
 
+        openDB();
+
         ConcurrentNavigableMap<String, String> IMEIDb = db.treeMap(IMEI_USER_DB);
-        return findUserById(IMEIDb.get(IMEI));
+        User userById = findUserById(IMEIDb.get(IMEI));
+
+        closeDB();
+        return userById;
     }
 
     public void createToken(String token, String imei, User user) {
+        openDB();
+
         ConcurrentNavigableMap<String, String> tokenDb = db.treeMap(TOKEN_USER_DB);
         tokenDb.put(token, user.getId());
 
@@ -77,5 +108,6 @@ public class UserRepository {
         IMEI2Token.put(imei, token);
 
         db.commit();
+        closeDB();
     }
 }

@@ -18,12 +18,6 @@
 
   <dependencies>
 
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>ame-api</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-
     <!-- Dependencies for REST client -->
     <dependency>
       <groupId>commons-io</groupId>
@@ -55,12 +49,6 @@
       <artifactId>jboss-as-ejb-client-bom</artifactId>
       <version>7.1.3.Final</version>
       <type>pom</type>
-    </dependency>
-
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>ame-services-ejb</artifactId>
-      <version>${project.version}</version>
     </dependency>
 
   </dependencies>
