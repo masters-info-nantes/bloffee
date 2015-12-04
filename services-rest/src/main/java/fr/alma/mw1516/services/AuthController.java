@@ -2,6 +2,7 @@ package fr.alma.mw1516.services;
 
 import fr.alma.mw1516.model.User;
 import fr.alma.mw1516.services.exception.*;
+
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -24,24 +25,37 @@ public class AuthController {
      *
      * @throws UnauthorizedException Api key missing or invalid
      * @throws NotFoundException IMEI not found
-     * @throws UnprocessableEntityException Malformed IMEI, must be 16 digits long
+     * @throws UnprocessableEntityException Malformed IMEI, must be 15 digits long
      */
     @RequestMapping(value = "auth", method = RequestMethod.POST)
     @ResponseBody
     public String auth(@RequestHeader(value = "Api-Key", required = true) String apiKey, @RequestParam(value = "imei", required = true) Long imei) {
         if (!this.apiKey.equals(apiKey)) {
-            throw new UnauthorizedException();
+        	UnauthorizedException ex = new UnauthorizedException();
+        	Log.getInstance().sendAuthenticationLog(imei, null, ex.getMessage());
+            throw ex;
         }
 
         Authentication authService = Authentication.getInstance();
 
         try {
-            return authService.getToken(imei);
+        	String token = authService.getToken(imei);
+        	try {
+				Log.getInstance().sendAuthenticationLog(imei, authService.getUser(token), "");
+			} catch (UserNotFoundException | TokenInvalidFormatException e) {
+				e.printStackTrace();
+			}
+            return token;
+            
 
         } catch (IMEINotFoundException e) {
-            throw new NotFoundException("Unregistered IMEI, can't authenticate, please contact the registration administrator");
+        	NotFoundException ex = new NotFoundException("Unregistered IMEI, can't authenticate, please contact the registration administrator");
+            Log.getInstance().sendAuthenticationLog(imei, null, ex.getMessage());
+        	throw ex;
         } catch (IMEIInvalidFormatException e) {
-            throw new UnprocessableEntityException("Malformed IMEI, must be 16 digits long");
+        	UnprocessableEntityException ex = new UnprocessableEntityException("Malformed IMEI, must be 15 digits long");
+            Log.getInstance().sendAuthenticationLog(imei, null, ex.getMessage());
+            throw ex;
         }
 
     }
