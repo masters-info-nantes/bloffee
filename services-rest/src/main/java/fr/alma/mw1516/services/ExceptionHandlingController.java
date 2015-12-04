@@ -57,7 +57,7 @@ public class ExceptionHandlingController {
     @ExceptionHandler(UnauthorizedException.class)
     public @ResponseBody Error handleErrorUnauthorized(Exception e) {
 
-        return new Error(HttpStatus.UNAUTHORIZED.value(), "Bad Api-Key value");
+        return new Error(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
