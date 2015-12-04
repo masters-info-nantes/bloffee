@@ -1,5 +1,6 @@
 package fr.alma.mw1516.services;
 
+import fr.alma.mw1516.model.Token;
 import fr.alma.mw1516.model.User;
 import fr.alma.mw1516.persistance.UserRepository;
 import fr.alma.mw1516.services.exception.IMEIInvalidFormatException;
@@ -50,7 +51,7 @@ public class Authentication {
         return token.length() == UUID.randomUUID().toString().length();
     }
     
-    public String getToken(Long imei) throws IMEINotFoundException, IMEIInvalidFormatException {
+    public Token getToken(Long imei) throws IMEINotFoundException, IMEIInvalidFormatException {
 
         if (!checkIMEI(imei))
             throw new IMEIInvalidFormatException();
@@ -65,6 +66,6 @@ public class Authentication {
             token = UUID.randomUUID().toString();
             UserRepository.getInstance().createToken(token, String.valueOf(imei), u);
         }
-    	return token;
+    	return new Token(token);
     }
 }

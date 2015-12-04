@@ -1,5 +1,6 @@
 package fr.alma.mw1516.services;
 
+import fr.alma.mw1516.model.Token;
 import fr.alma.mw1516.model.User;
 import fr.alma.mw1516.services.exception.*;
 
@@ -29,7 +30,7 @@ public class AuthController {
      */
     @RequestMapping(value = "auth", method = RequestMethod.POST)
     @ResponseBody
-    public String auth(@RequestHeader(value = "Api-Key", required = true) String apiKey, @RequestParam(value = "imei", required = true) Long imei) {
+    public Token auth(@RequestHeader(value = "Api-Key", required = true) String apiKey, @RequestParam(value = "imei", required = true) Long imei) {
         if (!this.apiKey.equals(apiKey)) {
         	UnauthorizedException ex = new UnauthorizedException();
         	Log.getInstance().sendAuthenticationLog(imei, null, ex.getMessage());
@@ -39,9 +40,9 @@ public class AuthController {
         Authentication authService = Authentication.getInstance();
 
         try {
-        	String token = authService.getToken(imei);
+        	Token token = authService.getToken(imei);
         	try {
-				Log.getInstance().sendAuthenticationLog(imei, authService.getUser(token), "");
+				Log.getInstance().sendAuthenticationLog(imei, authService.getUser(token.getToken()), "");
 			} catch (UserNotFoundException | TokenInvalidFormatException e) {
 				e.printStackTrace();
 			}
