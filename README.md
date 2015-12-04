@@ -1,41 +1,29 @@
-Projet Middleware pour le M2 ALMA 2015-2016
-===========================================
+Bloffee
+=======
 
-Diagramme pour l'authentification :
-http://tinyurl.com/p4f69bv
+![bloffee](https://cloud.githubusercontent.com/assets/6644095/11587607/e69ee9f8-9a7a-11e5-9ad6-d84ac1b8d3b4.png)
 
-Livrables
----------
+Bloffee is a token-based authentication service accessible via a rest API and developped in Java using the Spring framework
 
-- Mardi 01/12 : contrats
-- Vendredi 04/12 : code
-
-mailto: thimel at codelutin.com
-
-Précisez à chaque fois sur quelle partie vous travaillez et la liste des personnes dans le groupe.
-
-Démarrage
----------
-
-    $ git clone https://gitlab.nuiton.org/athimel/m2-mw-15-16.git
-    $ cd m2-mw-15-16
-    $ mvn clean install
-
-Téléchargements
----------------
-
-- IDEA : http://download.jetbrains.com/idea/ideaIC-15.0.1.tar.gz
-- Maven : http://apache.websitebeheerjd.nl/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz
-- JBoss Application Server : http://download.jboss.org/jbossas/7.1/jboss-as-7.1.1.Final/jboss-as-7.1.1.Final.zip
-- Tomcat : http://apache.mirrors.ovh.net/ftp.apache.org/dist/tomcat/tomcat-8/v8.0.28/bin/apache-tomcat-8.0.28.tar.gz
-
-Documentations
---------------
-
-- Spring MVC : http://docs.spring.io/spring/docs/4.2.x/spring-framework-reference/html/mvc.html
-
-Me contacter
+Installation
 ------------
 
-thimel at codelutin.com
+Clone this project, go into the project root folder, then type:
 
+```mvn clean install && mvn -pl services-rest tomcat7:run```
+
+The server should be running now, you can now call the urls defined in the following section "Documentation"
+
+or you can execute the example client by typing:
+
+```mvn -pl client install```
+
+Documentation
+----
+
+You can find the REST documentation here: https://github.com/masters-info-nantes/bloffee/tree/master/doc/rest-documentation.yaml
+
+Authors
+-------
+
+Created by Adrien Garandel & Nicolas Brondin

@@ -1,0 +1,78 @@
+swagger: '2.0'
+info:
+  version: 0.0.1
+  title: 'Bloffee'
+  description: 'Token based authentication server used with coffee machines'
+  contact:
+    name: Adrien Garandel & Nicolas Brondin
+paths:
+  /auth:
+    post:
+      description: |
+        Generate token based on IMEI
+      parameters:
+        - name: Api-Key
+          in: header
+          description: Authorization key to access the API
+          required: true
+          type: string
+          format: string
+        - name: IMEI
+          in: query
+          description: International Mobile Equipment Identity from NFC chip
+          required: true
+          type: number
+          format: int
+      responses:
+        '200':
+          description: Generated token
+          schema:
+            title: Token
+            type: string
+        '400':
+          description: Api key missing or invalid
+        '404':
+          description: Unregistered IMEI, can't authenticate, please contact the registration administrator
+        '422':
+          description: Malformed IMEI, must be 16 digits long
+  /token:
+    get:
+      description: |
+        Get user informations according to token
+      parameters:
+        - name: Api-Key
+          in: header
+          description: Authorization key to access the API
+          required: true
+          type: string
+          format: string
+        - name: Authorization
+          in: header
+          description: Authentication token
+          required: true
+          type: string
+          format: string
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            title: User
+            type: object
+            items:
+              title: Person
+              type: object
+              properties:
+                id:
+                  type: string
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+        '400':
+          description: Api key missing or invalid
+        '401':
+          description: Unauthorized token
+        '404':
+          description: No user found from this token
+        '422':
+          description: Malformed token
