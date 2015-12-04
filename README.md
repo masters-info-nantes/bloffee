@@ -16,7 +16,7 @@ The server should be running now, you can now call the urls defined in the follo
 
 or you can execute the example client by typing:
 
-```mvn -pl client install```
+```java -jar client/target/ame-client-*-jar-with-dependencies.jar```
 
 Documentation
 ----
