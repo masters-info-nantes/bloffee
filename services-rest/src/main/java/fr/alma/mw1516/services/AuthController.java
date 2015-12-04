@@ -24,7 +24,7 @@ public class AuthController {
      * @param imei International Mobile Equipment Identity from NFC chip
      * @return Generated token
      *
-     * @throws UnauthorizedException Api key missing or invalid
+     * @throws UnauthorizedException Api key missing or invalid / Token  expired
      * @throws NotFoundException IMEI not found
      * @throws UnprocessableEntityException Malformed IMEI, must be 15 digits long
      */
@@ -43,7 +43,7 @@ public class AuthController {
         	Token token = authService.getToken(imei);
         	try {
 				Log.getInstance().sendAuthenticationLog(imei, authService.getUser(token.getToken()), "");
-			} catch (UserNotFoundException | TokenInvalidFormatException e) {
+			} catch (UserNotFoundException | TokenInvalidFormatException | TokenExpiredException e) {
 				e.printStackTrace();
 			}
             return token;
@@ -68,7 +68,7 @@ public class AuthController {
      * @param token Authentication token
      * @return User information according to token
      *
-     * @throws UnauthorizedException Api key missing or invalid
+     * @throws UnauthorizedException Api key missing or invalid / Token  expired
      * @throws NotFoundException No user found from this token
      * @throws UnprocessableEntityException Malformed token
      */
@@ -87,6 +87,8 @@ public class AuthController {
             throw new NotFoundException("No user found from this token");
         } catch (TokenInvalidFormatException e) {
             throw new UnprocessableEntityException("Malformed token");
+        } catch (TokenExpiredException e) {
+            throw new UnauthorizedException("Token expired");
         }
 
     }

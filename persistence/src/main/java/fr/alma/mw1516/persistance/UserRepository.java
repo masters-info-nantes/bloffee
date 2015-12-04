@@ -1,10 +1,12 @@
 package fr.alma.mw1516.persistance;
 
+import fr.alma.mw1516.model.Token;
 import fr.alma.mw1516.model.User;
 import org.mapdb.DB;
 import org.mapdb.DBMaker;
 
 import java.io.File;
+import java.util.Date;
 import java.util.concurrent.ConcurrentNavigableMap;
 
 /**
@@ -48,17 +50,21 @@ public class UserRepository {
         return instance;
     }
 
-    public String findTokenByIMEI(String IMEI) {
+    public Token findTokenByIMEI(String IMEI) {
         if (IMEI == null)
             return null;
 
         openDB();
 
         ConcurrentNavigableMap<String, String> IMEI2Token = db.treeMap(IMEI_TOKEN_DB);
-        String s = IMEI2Token.get(IMEI);
+        String tokenId = IMEI2Token.get(IMEI);
+
+        TokenDB tokenDB = getTokenDB(tokenId);
+
+        Token token = new Token(tokenId, tokenDB.getExpireDate());
 
         closeDB();
-        return s;
+        return token;
     }
 
     public User findUserById(String userId) {
@@ -77,12 +83,20 @@ public class UserRepository {
         if (token == null)
             return null;
 
+        TokenDB tokenDB = getTokenDB(token);
+
+        return findUserById(tokenDB.getUserId());
+    }
+
+    private TokenDB getTokenDB(String token) {
         openDB();
 
-        ConcurrentNavigableMap<String, String> tokenDb = db.treeMap(TOKEN_USER_DB);
-        User userById = findUserById(tokenDb.get(token));
+        ConcurrentNavigableMap<String, TokenDB> tokenDb = db.treeMap(TOKEN_USER_DB);
+        TokenDB tokenDB = tokenDb.get(token);
+
         closeDB();
-        return userById;
+
+        return tokenDB;
     }
 
     public User findUserByIMEI(String IMEI) {
@@ -101,13 +115,26 @@ public class UserRepository {
     public void createToken(String token, String imei, User user) {
         openDB();
 
-        ConcurrentNavigableMap<String, String> tokenDb = db.treeMap(TOKEN_USER_DB);
-        tokenDb.put(token, user.getId());
+        Date expireTime = new Date();
+        expireTime.setTime(expireTime.getTime() + 10*60*1000);
+
+        TokenDB value = new TokenDB(user.getId(), expireTime);
+
+        ConcurrentNavigableMap<String, TokenDB> tokenDb = db.treeMap(TOKEN_USER_DB);
+        tokenDb.put(token, value);
 
         ConcurrentNavigableMap<String, String> IMEI2Token = db.treeMap(IMEI_TOKEN_DB);
         IMEI2Token.put(imei, token);
 
         db.commit();
         closeDB();
+    }
+
+    public Token findToken(String tokenId) {
+        TokenDB tokenDB = getTokenDB(tokenId);
+        if (tokenDB == null)
+            return null;
+
+        return new Token(tokenId, tokenDB.getExpireDate());
     }
 }

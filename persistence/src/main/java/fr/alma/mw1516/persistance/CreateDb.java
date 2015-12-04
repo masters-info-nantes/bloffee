@@ -5,6 +5,7 @@ import org.mapdb.DB;
 import org.mapdb.DBMaker;
 
 import java.io.File;
+import java.util.Date;
 import java.util.concurrent.ConcurrentNavigableMap;
 
 /**
@@ -40,12 +41,16 @@ public class CreateDb {
         IMEI2User.put("358621493054809", "msmith");
         IMEI2User.put("444786932124868", "jsmith");
 
-        ConcurrentNavigableMap<String, String> token = db.treeMap(TOKEN_USER_DB);
+        ConcurrentNavigableMap<String, TokenDB> token = db.treeMap(TOKEN_USER_DB);
         ConcurrentNavigableMap<String, String> IMEI2token = db.treeMap(IMEI_TOKEN_DB);
 
-        token.put("65462557-6f92-46d8-9060-1ac1de36fcb5", "msmith");
+        Date expireTime = new Date();
+        expireTime.setTime(expireTime.getTime() + 10*60*1000);
+        System.out.println(expireTime.toString());
+
+        token.put("65462557-6f92-46d8-9060-1ac1de36fcb5", new TokenDB("msmith", expireTime));
         IMEI2token.put("358621493054809", "65462557-6f92-46d8-9060-1ac1de36fcb5");
-        token.put("ca8b354a-2993-487c-9efc-dce0704c3ab4", "jsmith");
+        token.put("ca8b354a-2993-487c-9efc-dce0704c3ab4", new TokenDB("jsmith", expireTime));
         IMEI2token.put("444786932124868", "ca8b354a-2993-487c-9efc-dce0704c3ab4");
 
         db.commit();

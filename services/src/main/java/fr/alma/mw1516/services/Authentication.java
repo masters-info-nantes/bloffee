@@ -5,9 +5,11 @@ import fr.alma.mw1516.model.User;
 import fr.alma.mw1516.persistance.UserRepository;
 import fr.alma.mw1516.services.exception.IMEIInvalidFormatException;
 import fr.alma.mw1516.services.exception.IMEINotFoundException;
+import fr.alma.mw1516.services.exception.TokenExpiredException;
 import fr.alma.mw1516.services.exception.TokenInvalidFormatException;
 import fr.alma.mw1516.services.exception.UserNotFoundException;
 
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -30,11 +32,16 @@ public class Authentication {
         return instance;
     }
 
-    public User getUser(String token) throws UserNotFoundException, TokenInvalidFormatException {
-        if (!checkToken(token))
+    public User getUser(String tokenId) throws UserNotFoundException, TokenInvalidFormatException, TokenExpiredException {
+        if (!checkToken(tokenId))
             throw new TokenInvalidFormatException();
 
-        User u = UserRepository.getInstance().findUserByToken(token);
+        Token token = UserRepository.getInstance().findToken(tokenId);
+        if (token == null || token.getExpired().before(new Date())) {
+            throw new TokenExpiredException();
+        }
+
+        User u = UserRepository.getInstance().findUserByToken(tokenId);
         if (u == null) {
             throw new UserNotFoundException();
         }
@@ -61,11 +68,13 @@ public class Authentication {
             throw new IMEINotFoundException();
         }
 
-        String token = UserRepository.getInstance().findTokenByIMEI(String.valueOf(imei));
-        if (token == null) {
-            token = UUID.randomUUID().toString();
-            UserRepository.getInstance().createToken(token, String.valueOf(imei), u);
+        Token token = UserRepository.getInstance().findTokenByIMEI(String.valueOf(imei));
+        if (token == null || token.getExpired().before(new Date())) {
+            UserRepository.getInstance()
+                    .createToken(UUID.randomUUID().toString(),
+                            String.valueOf(imei),
+                            u);
         }
-    	return new Token(token);
+    	return token;
     }
 }
