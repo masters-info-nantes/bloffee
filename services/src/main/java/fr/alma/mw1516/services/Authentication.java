@@ -55,10 +55,15 @@ public class Authentication {
         if (!checkIMEI(imei))
             throw new IMEIInvalidFormatException();
 
-    	String token = UserRepository.getInstance().findTokenByIMEI(String.valueOf(imei));
-    	//Remember to save the token in the database!!!
-        if (token == null) {
+        User u = UserRepository.getInstance().findUserByIMEI(String.valueOf(imei));
+        if (u == null) {
             throw new IMEINotFoundException();
+        }
+
+        String token = UserRepository.getInstance().findTokenByIMEI(String.valueOf(imei));
+        if (token == null) {
+            token = UUID.randomUUID().toString();
+            UserRepository.getInstance().createToken(token, String.valueOf(imei), u);
         }
     	return token;
     }

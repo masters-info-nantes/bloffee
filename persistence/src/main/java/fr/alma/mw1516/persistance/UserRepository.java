@@ -68,4 +68,14 @@ public class UserRepository {
         ConcurrentNavigableMap<String, String> IMEIDb = db.treeMap(IMEI_USER_DB);
         return findUserById(IMEIDb.get(IMEI));
     }
+
+    public void createToken(String token, String imei, User user) {
+        ConcurrentNavigableMap<String, String> tokenDb = db.treeMap(TOKEN_USER_DB);
+        tokenDb.put(token, user.getId());
+
+        ConcurrentNavigableMap<String, String> IMEI2Token = db.treeMap(IMEI_TOKEN_DB);
+        IMEI2Token.put(imei, token);
+
+        db.commit();
+    }
 }
